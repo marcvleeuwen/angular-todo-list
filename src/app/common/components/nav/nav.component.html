@@ -1,0 +1,19 @@
+<div class="bg-white">
+  <div class="container">
+    <div class="btn-bar">
+      <span *ngIf="config.navButton === 'menu'"
+            (click)="onNavigationClick('menu')"
+            class="link material-icons">menu</span>
+      <span *ngIf="config.navButton === 'back'"
+            (click)="onNavigationClick('back')"
+            class="link material-icons">keyboard_backspace</span>
+      <span *ngIf="config.actionButton === 'add-item'"
+            (click)="onActionButtonClick('add-item')"
+            class="link text-accent material-icons">add_box</span>
+      <span *ngIf="config.actionButton === 'btn-done'"
+            (click)="onActionButtonClick('btn-done')"
+            class="link text-accent text-semi-bold">Done</span>
+    </div>
+    <h2 class="title text-semi-bold">{{config.title}}</h2>
+  </div>
+</div>

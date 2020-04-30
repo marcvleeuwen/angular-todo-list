@@ -1,0 +1,46 @@
+div:first-of-type {
+  position: relative;
+  text-align: center;
+  height: calc(100vh - 50px);
+}
+
+svg {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+.container {
+  color: #FFFFFF;
+
+  .title {
+    position: absolute;
+    font-size: 40px;
+    font-weight: 400;
+
+    top: 176px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .cart {
+    position: absolute;
+    height: min-content;
+    font-size: 100px;
+
+    top: 306px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .loading {
+    position: absolute;
+    font-weight: 400;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    color: #1B2136;
+  }
+}

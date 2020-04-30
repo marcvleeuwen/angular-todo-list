@@ -1,0 +1,63 @@
+<app-nav [config]="navConfig"></app-nav>
+<div class="container">
+  <app-tabs (tabChange)="onTabChange($event)" [tabs]="tabs"></app-tabs>
+
+  <div class="content">
+    <ul class="pages">
+      <li class="page_content" id="page_{{tabs[0].componentTag}}">
+        <form (ngSubmit)="onSubmit(loginForm.value, 'login')"
+              [formGroup]="loginForm" class="items">
+          <input [tabIndex]="activeComponent === tabs[0].componentTag? 0 : -1"
+                 class="text-input"
+                 name="login-username-email"
+                 placeholder="Username or email"
+                 type="text"
+                 formControlName="username">
+          <input [tabIndex]="activeComponent === tabs[0].componentTag? 0 : -1"
+                 class="text-input"
+                 name="login-password"
+                 placeholder="Password"
+                 type="password"
+                 formControlName="password">
+          <button [tabIndex]="activeComponent === tabs[0].componentTag? 0 : -1"
+                  class="btn btn-submit float-right"
+                  type="submit">Submit
+          </button>
+        </form>
+      </li>
+      <li class="page_content" id="page_{{tabs[1].componentTag}}">
+        <form (ngSubmit)="onSubmit(signupForm.value, 'signup')"
+              [formGroup]="signupForm" class="items">
+          <input [tabIndex]="activeComponent === tabs[1].componentTag? 0 : -1"
+                 class="text-input"
+                 name="signup-username"
+                 placeholder="Username"
+                 type="text"
+                 formControlName="username">
+          <input [tabIndex]="activeComponent === tabs[1].componentTag? 0 : -1"
+                 class="text-input"
+                 name="signup-email"
+                 placeholder="Email"
+                 type="email"
+                 formControlName="email">
+          <input [tabIndex]="activeComponent === tabs[1].componentTag? 0 : -1"
+                 class="text-input"
+                 name="signup-password"
+                 placeholder="Password"
+                 type="password"
+                 formControlName="password">
+          <input [tabIndex]="activeComponent === tabs[1].componentTag? 0 : -1"
+                 class="text-input"
+                 name="signup-confirm-password"
+                 placeholder="Confirm password"
+                 type="password"
+                 formControlName="password2">
+          <button [tabIndex]="activeComponent === tabs[1].componentTag? 0 : -1"
+                  class="btn btn-submit float-right"
+                  type="submit">Submit
+          </button>
+        </form>
+      </li>
+    </ul>
+  </div>
+</div>

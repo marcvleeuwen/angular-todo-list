@@ -1,0 +1,27 @@
+<div class="item">
+  <div (onLongPress)="onItemLongPress(item)" class="quantity text-semi-bold" long-press>{{item.quantity}}</div>
+  <div (onLongPress)="onItemLongPress(item)" class="info" long-press>
+    <div class="title text-semi-bold">{{item.title}}</div>
+    <div class="description">{{item.description}}</div>
+  </div>
+  <!--tick-->
+  <svg (click)="onCheckboxClick()" (onLongPress)="onCheckboxLongPress()" *ngIf="item.status === 'done'" class="checkbox"
+       fill="none" height="25" long-press viewBox="0 0 25 25" width="25" xmlns="http://www.w3.org/2000/svg">
+    <circle class="stroke-accent" cx="12.5" cy="12.5" r="12"/>
+    <path class="fill-accent"
+          d="M10.3135 15.1427L7.46873 12.2979L6.5 13.2599L10.3135 17.0734L18.5 8.88691L17.5381 7.925L10.3135 15.1427Z"/>
+  </svg>
+  <!--exclamation-->
+  <svg (click)="onCheckboxClick()" (onLongPress)="onCheckboxLongPress()" *ngIf="item.status === 'error'"
+       class="checkbox"
+       fill="none" height="25" long-press viewBox="0 0 25 25" width="25" xmlns="http://www.w3.org/2000/svg">
+    <circle class="stroke-error" cx="12.5" cy="12.5" r="12"/>
+    <path class="fill-error" d="M13.5 7.5V13.5H11.5V7.5H13.5Z"/>
+    <path class="fill-error" d="M13.5 17.5V15.5H11.5V17.5H13.5Z"/>
+  </svg>
+  <!--blank-->
+  <svg (click)="onCheckboxClick()" (onLongPress)="onCheckboxLongPress()" *ngIf="!item.status" class="checkbox"
+       fill="none" height="25" long-press viewBox="0 0 25 25" width="25" xmlns="http://www.w3.org/2000/svg">
+    <circle class="stroke-default" cx="12.5" cy="12.5" r="12"/>
+  </svg>
+</div>

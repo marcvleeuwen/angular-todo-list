@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  adminRoles: [99, 999],
+  production: false
 };

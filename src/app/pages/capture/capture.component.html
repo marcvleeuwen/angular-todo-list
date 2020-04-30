@@ -1,0 +1,76 @@
+<app-nav (buttonClick)="onNavButtonClicked($event)" [config]="navConfig"></app-nav>
+<div class="container">
+  <form (ngSubmit)="onSubmit(itemForm.value, 'login')"
+        *ngIf="config?.type === 'item'; else list"
+        [formGroup]="itemForm" class="items">
+    <label for="item-title">
+      <div>Item title <span class="extra-text">(25 characters)</span></div>
+      <input class="text-input"
+             formControlName="title"
+             id="item-title"
+             name="item-title"
+             type="text">
+    </label>
+    <label for="item-description">
+      <div>Item description <span class="extra-text">(100 characters)</span></div>
+      <input class="text-input"
+             formControlName="description"
+             id="item-description"
+             name="item-description"
+             type="text">
+    </label>
+    <label for="item-quantity">
+      <div>Item Quantity</div>
+      <input class="text-input"
+             formControlName="description"
+             id="item-quantity"
+             name="item-quantity"
+             type="text">
+    </label>
+    <label for="item-category">
+      <div>Item Category</div>
+      <select class="text-input"
+              formControlName="category"
+              id="item-category"
+              name="login-password">
+        <option value="other">Other category</option>
+      </select>
+    </label>
+    <button *ngIf="config?.action === 'edit'"
+            class="btn btn-submit float-right"
+            type="submit">Delete
+    </button>
+  </form>
+</div>
+
+<ng-template #list>
+  <form (ngSubmit)="onSubmit(listForm.value, 'login')"
+        [formGroup]="listForm" class="items">
+    <label for="list-title">
+      <div>List title <span class="extra-text">(25 characters)</span></div>
+      <input class="text-input"
+             formControlName="title"
+             id="list-title"
+             name="list-title"
+             type="text">
+    </label>
+    <label for="list-description">
+      <div>List description <span class="extra-text">(100 characters)</span></div>
+      <input class="text-input"
+             formControlName="description"
+             id="list-description"
+             name="list-description"
+             type="text">
+    </label>
+    <label for="list-users">
+      <div>Linked Users</div>
+      <ul id="list-users">
+        <li>users</li>
+      </ul>
+    </label>
+    <button *ngIf="config?.action === 'edit'"
+            class="btn btn-submit float-right"
+            type="submit">Delete
+    </button>
+  </form>
+</ng-template>

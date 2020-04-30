@@ -1,0 +1,18 @@
+<app-nav [config]="{title: 'Home', navButton: 'menu'}"></app-nav>
+<div class="container">
+  <div class="lists">
+    <div (click)="onListClick(list.id)" *ngFor="let list of userList" long-press (onLongPress)="onCardLongPress(list)" class="card">
+      <div class="info">
+        <h2 class="title">{{list.title}}</h2>
+        <div class="description">{{list.description}}</div>
+      </div>
+      <div class="user-info">
+        <div class="users">{{list.user_count}} {{list.user_count === 1 ? 'user' : 'users'}}</div>
+        <span *ngIf="list.created_by === 1" class="material-icons text-accent" title="Add a user to this list">person_add</span>
+      </div>
+    </div>
+    <div class="card new-list">
+      <span class="material-icons text-accent" title="Create a new list" (click)="onNewListClick()">add_box</span>
+    </div>
+  </div>
+</div>

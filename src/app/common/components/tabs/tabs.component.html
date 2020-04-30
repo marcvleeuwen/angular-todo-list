@@ -1,0 +1,4 @@
+<div class="tabs">
+  <span *ngFor="let tab of tabs" class="tab" [class.active]="tab.active"
+        (click)="onTabChange(tab)">{{tab.title}}</span>
+</div>
