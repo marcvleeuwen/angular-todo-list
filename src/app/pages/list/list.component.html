@@ -1,11 +1,11 @@
 <app-nav (buttonClick)="onNavButtonClick($event)"
-         [config]="{title: 'List name', navButton: 'menu', actionButton: 'add-item'}"></app-nav>
+         [config]="navConfig"></app-nav>
 <div class="container">
   <app-tabs (tabChange)="onTabChanged($event)" [tabs]="tabs"></app-tabs>
-  <div *ngFor="let category of listItems?.categories">
+  <div *ngFor="let category of categories">
     <h2>{{category.title}}</h2>
-    <div *ngFor="let item of category.items">
-      <app-item (itemLongPressed)="onItemLongPress($event)" [item]="item"></app-item>
+    <div *ngFor="let item of items">
+      <app-item *ngIf="item.category_id === category.id" (itemLongPressed)="onItemLongPress($event)" [item]="item" (itemStatusChanged)="updateItemStatus($event)"></app-item>
     </div>
   </div>
 </div>

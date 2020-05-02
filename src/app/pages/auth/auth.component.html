@@ -5,59 +5,116 @@
   <div class="content">
     <ul class="pages">
       <li class="page_content" id="page_{{tabs[0].componentTag}}">
-        <form (ngSubmit)="onSubmit(loginForm.value, 'login')"
+        <form (change)="formChanged()"
+              (ngSubmit)="onSubmit(loginForm.value, 'login')"
               [formGroup]="loginForm" class="items">
-          <input [tabIndex]="activeComponent === tabs[0].componentTag? 0 : -1"
+          <div *ngIf="errors?.loginUsernamePassword || errors?.loginUsername"
+               class="invalid-input">{{errors?.loginUsernamePassword || errors?.loginUsername}}</div>
+          <input [class.invalid]="errors.loginUsernamePassword || errors?.loginUsername"
+                 [tabIndex]="activeComponent === tabs[0].componentTag? 0 : -1"
                  class="text-input"
+                 formControlName="username"
                  name="login-username-email"
                  placeholder="Username or email"
-                 type="text"
-                 formControlName="username">
-          <input [tabIndex]="activeComponent === tabs[0].componentTag? 0 : -1"
+                 type="text">
+          <div *ngIf="errors?.loginUsername" class="invalid-input">{{errors?.loginPassword}}</div>
+          <input [class.invalid]="errors.loginUsernamePassword || errors.loginPassword"
+                 [tabIndex]="activeComponent === tabs[0].componentTag? 0 : -1"
                  class="text-input"
+                 formControlName="password"
                  name="login-password"
                  placeholder="Password"
-                 type="password"
-                 formControlName="password">
-          <button [tabIndex]="activeComponent === tabs[0].componentTag? 0 : -1"
-                  class="btn btn-submit float-right"
-                  type="submit">Submit
-          </button>
+                 type="password">
+          <div class="btn-bar">
+            <button [tabIndex]="activeComponent === tabs[0].componentTag? 0 : -1"
+                    class="btn btn-submit float-right"
+                    type="submit">Submit
+            </button>
+          </div>
         </form>
+        <span (click)="toggleModal()" class="change-password">Change password</span>
       </li>
       <li class="page_content" id="page_{{tabs[1].componentTag}}">
         <form (ngSubmit)="onSubmit(signupForm.value, 'signup')"
               [formGroup]="signupForm" class="items">
+          <div *ngIf="errors?.signupUsername" class="invalid-input">{{errors?.signupUsername}}</div>
           <input [tabIndex]="activeComponent === tabs[1].componentTag? 0 : -1"
                  class="text-input"
+                 formControlName="username"
                  name="signup-username"
                  placeholder="Username"
-                 type="text"
-                 formControlName="username">
+                 type="text">
+          <div *ngIf="errors?.signupEmail" class="invalid-input">{{errors?.signupEmail}}</div>
           <input [tabIndex]="activeComponent === tabs[1].componentTag? 0 : -1"
                  class="text-input"
+                 formControlName="email"
                  name="signup-email"
                  placeholder="Email"
-                 type="email"
-                 formControlName="email">
+                 type="email">
+          <div *ngIf="errors?.signupPassword" class="invalid-input">{{errors?.signupPassword}}</div>
           <input [tabIndex]="activeComponent === tabs[1].componentTag? 0 : -1"
                  class="text-input"
+                 formControlName="password"
                  name="signup-password"
                  placeholder="Password"
-                 type="password"
-                 formControlName="password">
+                 type="password">
+          <div *ngIf="errors?.signupPassword2" class="invalid-input">{{errors?.signupPassword2}}</div>
           <input [tabIndex]="activeComponent === tabs[1].componentTag? 0 : -1"
                  class="text-input"
+                 formControlName="password2"
                  name="signup-confirm-password"
                  placeholder="Confirm password"
-                 type="password"
-                 formControlName="password2">
-          <button [tabIndex]="activeComponent === tabs[1].componentTag? 0 : -1"
-                  class="btn btn-submit float-right"
-                  type="submit">Submit
-          </button>
+                 type="password">
+          <div class="btn-bar">
+            <button [disabled]="!signupForm.valid"
+                    [tabIndex]="activeComponent === tabs[1].componentTag? 0 : -1"
+                    class="btn btn-submit"
+                    type="submit">Submit
+            </button>
+          </div>
         </form>
       </li>
     </ul>
+  </div>
+</div>
+
+<div *ngIf="showModal" class="modal">
+  <div class="modal-header">
+    <div class="container">
+      <div class="title text-semi-bold">Change password</div>
+      <div tabindex="-1" (click)="handleModalNegative()" class="material-icons">close</div>
+    </div>
+  </div>
+  <div class="modal-body container">
+    <form (ngSubmit)="handleModalPositive()" [formGroup]="changePasswordForm">
+      <div *ngIf="errors?.changeUsername" class="invalid-input">{{errors?.changeUsername}}</div>
+      <input class="text-input"
+             formControlName="username"
+             name="changePasswordUsername"
+             placeholder="Username"
+             type="text">
+      <div *ngIf="errors?.changeEmail" class="invalid-input">{{errors?.changeEmail}}</div>
+      <input class="text-input"
+             formControlName="email"
+             name="changePassword2"
+             placeholder="Email"
+             type="email">
+      <div *ngIf="errors?.changePassword" class="invalid-input">{{errors?.changePassword}}</div>
+      <input class="text-input"
+             formControlName="password"
+             name="changePassword"
+             placeholder="Password"
+             type="password">
+      <div *ngIf="errors?.changePassword2" class="invalid-input">{{errors?.changePassword2}}</div>
+      <input class="text-input"
+             formControlName="password2"
+             name="changePassword2"
+             placeholder="Confirm password"
+             type="password">
+      <div class="btn-bar">
+        <button type="button" (click)="handleModalNegative()" class="btn btn-outline">Cancel</button>
+        <button type="submit" class="btn btn-submit">Submit</button>
+      </div>
+    </form>
   </div>
 </div>

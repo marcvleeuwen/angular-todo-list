@@ -11,6 +11,7 @@ export class ItemComponent implements OnInit {
 
   @Input() item: Item;
   @Output() itemLongPressed: EventEmitter<Item> = new EventEmitter<Item>();
+  @Output() itemStatusChanged: EventEmitter<Item> = new EventEmitter<Item>();
 
   constructor() {
   }
@@ -40,7 +41,7 @@ export class ItemComponent implements OnInit {
 
   private updateItemStatus(status: string) {
     this.item.status = status;
-    console.log(status);
-  };
+    this.itemStatusChanged.emit(this.item);
+  }
 
 }

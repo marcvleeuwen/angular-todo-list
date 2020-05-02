@@ -103,6 +103,11 @@ html, body {
 }
 
 
+.btn-bar {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .btn {
   font-family: 'Open Sans', sans-serif;
   width: 100px;

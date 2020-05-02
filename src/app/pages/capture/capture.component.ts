@@ -38,6 +38,13 @@ export class CapturePage implements OnInit {
   ngOnInit(): void {
     if (this.config && this.config.action === 'edit') {
       // get details from service
+      if (this.config.type === 'item' && this.config.item) {
+        this.itemForm.setValue({
+          ['title']: this.config.item.title,
+          ['description']: this.config.item.description,
+          ['quantity']: this.config.item.quantity,
+        });
+      }
       // populate form
     }
   }

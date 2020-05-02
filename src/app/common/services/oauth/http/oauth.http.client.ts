@@ -1,3 +1,4 @@
+/* tslint:disable:object-literal-shorthand */
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
@@ -37,7 +38,12 @@ export class OauthHttpClient {
     );
   }
 
-  public signUp(username: string, email: string, password: string, password2: string, firstName?: string, lastName?: string): Observable<string> {
+  public signUp(username: string,
+                email: string,
+                password: string,
+                password2: string,
+                firstName?: string,
+                lastName?: string): Observable<string> {
     const headers: HttpHeaders = new HttpHeaders()
       .set('Content-Type', 'application/json');
 
@@ -51,6 +57,32 @@ export class OauthHttpClient {
     };
 
     const url: string = '/api/v1/auth/signup';
+
+    return this.httpClient.post<string>(
+      url,
+      body,
+      {
+        headers
+      }
+    ).pipe(
+      catchError((err: HttpErrorResponse) => {
+        throw err;
+      })
+    );
+  }
+
+  public passwordReset(username: string, email: string, password: string, password2: string): Observable<string> {
+    const headers: HttpHeaders = new HttpHeaders()
+      .set('Content-Type', 'application/json');
+
+    const body = {
+      username: username,
+      email: email,
+      password: password,
+      password2: password2
+    };
+
+    const url: string = '/api/v1/auth/reset-password';
 
     return this.httpClient.post<string>(
       url,

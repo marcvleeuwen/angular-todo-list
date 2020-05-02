@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {OauthUtils} from '../../common/utils/oauth.utils';
 import {Router} from '@angular/router';
 import {List} from '../../common/models/list.model';
+import {ListServiceHttpClient} from '../../common/services/list-service/http/list-service.http.client';
 
 @Component({
   selector: 'app-home',
@@ -10,42 +11,24 @@ import {List} from '../../common/models/list.model';
 })
 export class HomePage implements OnInit {
 
-  public userList: List[] = [{
-    id: 1,
-    title: 'Test list',
-    description: 'This is a test list',
-    created_by: 1,
-    user_count: 3
-  }, {
-    id: 2,
-    title: 'Test list',
-    description: 'This is a test list',
-    created_by: 2,
-    user_count: 1
-  }, {
-    id: 3,
-    title: 'Test list',
-    description: 'This is a test list',
-    created_by: 5,
-    user_count: 8
-  }, {
-    id: 4,
-    title: 'Test list',
-    description: 'This is a test list',
-    created_by: 2,
-    user_count: 12
-  }];
+  public userLists: List[];
   private userId: number;
 
-  constructor(private readonly router: Router) {
+  constructor(private readonly router: Router,
+              private readonly httpClient: ListServiceHttpClient) {
   }
 
   ngOnInit(): void {
     this.userId = OauthUtils.getLoggedInUser().id;
+    this.httpClient.getListsForUser(this.userId).subscribe((lists) => {
+      this.userLists = lists;
+    }, (error) => {
+      console.error('getListsForUser', error);
+    });
   }
 
-  public onListClick(listId: number) {
-    this.router.navigate(['/list']);
+  public onListClick(list: List) {
+    this.router.navigate(['/list'], {queryParams: { listId: list.id }});
   }
 
   public onNewListClick() {

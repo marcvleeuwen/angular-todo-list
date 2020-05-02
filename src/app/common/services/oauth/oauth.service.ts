@@ -22,6 +22,10 @@ export class OauthService {
     return this.httpClient.signUp(username, email, password, password2, firstName, lastName);
   }
 
+  public passwordReset(username: string, email: string, password: string, password2: string): Observable<string> {
+    return this.httpClient.passwordReset(username, email, password, password2);
+  }
+
   public logout(): void {
     OauthUtils.removeRawToken();
   }

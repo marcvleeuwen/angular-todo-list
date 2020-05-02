@@ -1,10 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {Tab} from '../../common/models/tab.model';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {OauthUtils} from '../../common/utils/oauth.utils';
 import {User} from '../../common/models/user.model';
 import {Item} from '../../common/models/item.model';
 import {List} from '../../common/models/list.model';
+import {ListServiceHttpClient} from '../../common/services/list-service/http/list-service.http.client';
+import {NavConfig} from '../../common/models/nav-config.model';
+import {Category} from '../../common/models/category.model';
 
 @Component({
   selector: 'app-list',
@@ -13,53 +16,8 @@ import {List} from '../../common/models/list.model';
 })
 export class ListPage implements OnInit {
 
-  public listItems: List = {
-    id: 0,
-    title: 'Test list',
-    description: 'This is a test list',
-    created_by: 1,
-    user_count: 8,
-    categories: [
-      {
-        id: 3,
-        title: 'Meat/Poultry',
-        description: 'Fresh meat and poultry products',
-        items: [
-          {
-            id: 2,
-            category_id: 3,
-            title: 'steak',
-            description: 'Chuck steak',
-            status: null,
-            quantity: '300g'
-          },
-          {
-            id: 3,
-            category_id: 3,
-            title: 'chicken fillets',
-            description: 'pack of 5',
-            status: null,
-            quantity: '1'
-          }
-        ]
-      },
-      {
-        id: 5,
-        title: 'Dry/Tinned',
-        description: 'Preserved foods',
-        items: [
-          {
-            id: 1,
-            category_id: 5,
-            title: 'beans',
-            description: 'Baked beans',
-            status: null,
-            quantity: '1'
-          }
-        ]
-      }
-    ]
-  };
+  public categories: Category[];
+  public items: Item[];
   public tabs: Tab[] = [{
     id: 0,
     title: 'All',
@@ -79,28 +37,53 @@ export class ListPage implements OnInit {
     enabled: true,
     componentTag: 'incomplete-items'
   }];
-
+  public navConfig: NavConfig = {
+    title: '',
+    navButton: 'menu',
+    actionButton: 'add-item'
+  };
+  private list: List;
+  private queryParams: any;
   private currentUser: User = OauthUtils.getLoggedInUser();
   private isListAdmin: boolean = OauthUtils.isAdmin()
-    || this.listItems.created_by === this.currentUser.id; // user this to be able to add users
+    || this.list.created_by === this.currentUser.id; // use this to be able to add users
 
-  constructor(private readonly router: Router) {
+  constructor(private readonly router: Router,
+              private readonly activatedRoute: ActivatedRoute,
+              private readonly listService: ListServiceHttpClient) {
   }
 
   ngOnInit(): void {
-    //  make service call to get the list for currentUser
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.queryParams = params;
+    });
+    this.listService.getListItems(this.queryParams.listId).subscribe((list) => {
+      this.list = JSON.parse(JSON.stringify(list));
+      this.categories = JSON.parse(JSON.stringify(list.categories));
+      this.items = JSON.parse(JSON.stringify(list.items));
+
+      this.navConfig.title = this.list.title;
+    }, (error) => {
+      console.error('getListItems', error);
+    });
   }
 
   public onTabChanged(tabIndex: number) {
+    this.items = this.list.items;
+    this.categories = this.list.categories;
     switch (tabIndex) {
-      case 0:
-        console.log('All items to be shown');
-        break;
       case 1:
-        console.log('Only incomplete items to be shown');
+        this.categories = this.list.categories;
+        this.items = this.list.items.filter(item => !item.status);
+        this.categories = this.list.categories.filter(category =>
+          this.items.some(item =>
+            item.category_id === category.id));
         break;
       case 2:
-        console.log('only items with issues to be shown');
+        this.items = this.items.filter(item => item.status === 'error');
+        this.categories = this.categories.filter(category =>
+          this.items.some(item =>
+            item.category_id === category.id));
         break;
     }
   }
@@ -120,8 +103,14 @@ export class ListPage implements OnInit {
     this.router.navigate(['/capture'], {state: {type: 'item', back: this.router.url, action: 'edit', details: item}});
   }
 
+  public updateItemStatus(item: Item): void {
+    this.list.items.find(listItem => listItem.id === item.id).status = item.status;
+    this.onTabChanged(this.tabs.find(tab => tab.active).id);
+  }
+
   private onMenuClick(): void {
     console.log('toggle sideNav');
+    this.router.navigate(['/home']);
   }
 
   private onNewItemClick(): void {

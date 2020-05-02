@@ -36,6 +36,68 @@
   }
 }
 
+.invalid {
+  border: 1px solid #DA1B1B;
 
+  &-input {
+    font-size: 12px;
+    font-weight: 400;
+    color: #DA1B1B;
+  }
+}
 
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000000bf;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 
+  &-header {
+    width: 100%;
+    background: white;
+    color: #1B2136;
+
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .title {
+        font-size: 18px;
+      }
+    }
+  }
+
+  .modal-body {
+    width: calc(100% - 50px);
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
+.btn-bar {
+
+  .btn-outline {
+    border: 1px solid #F3F5FA;
+    color: #F3F5FA;
+    background: transparent;
+
+    &:hover, &:focus {
+      background: #F3F5FA;
+      color: #1B2136;
+    }
+  }
+
+  .btn:not(:first-of-type) {
+    margin-left: 10px;
+  }
+}

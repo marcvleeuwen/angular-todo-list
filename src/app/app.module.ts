@@ -19,6 +19,10 @@ import {EffectsModule} from '@ngrx/effects';
 import {metaReducers, routerReducer} from './common/router/store';
 import {CustomRouterStateSerializer} from './common/router/store/router.util';
 import {StoreRouterConnectingModule} from '@ngrx/router-store';
+import {ListServiceModule} from './common/services/list-service/list-service.service.module';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {JwtHttpInterceptor} from './common/interceptors/jwt.interceptor';
+import {ModalModule} from './common/components/modal/modal.module';
 
 
 @NgModule({
@@ -44,10 +48,16 @@ import {StoreRouterConnectingModule} from '@ngrx/router-store';
     HomePageModule,
     AuthPageModule,
     SplashScreenPageModule,
+    ModalModule,
     // services
-    OauthServiceModule
+    OauthServiceModule,
+    ListServiceModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: JwtHttpInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,4 +1,5 @@
 import {Category} from './category.model';
+import {Item} from './item.model';
 
 export interface List {
   id: number;
@@ -7,4 +8,5 @@ export interface List {
   created_by: number;
   user_count: number;
   categories?: Category[];
+  items?: Item[];
 }
