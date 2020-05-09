@@ -23,6 +23,8 @@ import {ListServiceModule} from './common/services/list-service/list-service.ser
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {JwtHttpInterceptor} from './common/interceptors/jwt.interceptor';
 import {ModalModule} from './common/components/modal/modal.module';
+import {AuthGuard} from './common/guards/auth.guard';
+import {SelectModule} from './common/components/select/select.module';
 
 
 @NgModule({
@@ -48,7 +50,9 @@ import {ModalModule} from './common/components/modal/modal.module';
     HomePageModule,
     AuthPageModule,
     SplashScreenPageModule,
+    // components
     ModalModule,
+    SelectModule,
     // services
     OauthServiceModule,
     ListServiceModule
@@ -57,7 +61,7 @@ import {ModalModule} from './common/components/modal/modal.module';
     provide: HTTP_INTERCEPTORS,
     useClass: JwtHttpInterceptor,
     multi: true
-  }],
+  }, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {

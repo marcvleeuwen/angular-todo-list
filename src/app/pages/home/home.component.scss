@@ -1,6 +1,6 @@
 .lists {
   display: grid;
-  grid-template-columns: repeat( auto-fit, 161px );
+  grid-template-columns: repeat(auto-fit, 161px);
   grid-gap: 3px;
 }
 
@@ -14,6 +14,10 @@
   justify-content: space-between;
   border-radius: 10px;
   height: 131px;
+
+  &:not(.new-list) {
+    cursor: pointer;
+  }
 
   .delete {
     position: absolute;

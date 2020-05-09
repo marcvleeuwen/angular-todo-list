@@ -32,7 +32,7 @@
             </button>
           </div>
         </form>
-        <span (click)="toggleModal()" class="change-password">Change password</span>
+        <span (click)="toggleModal()" class="text-link change-password">Change password</span>
       </li>
       <li class="page_content" id="page_{{tabs[1].componentTag}}">
         <form (ngSubmit)="onSubmit(signupForm.value, 'signup')"
@@ -66,8 +66,7 @@
                  placeholder="Confirm password"
                  type="password">
           <div class="btn-bar">
-            <button [disabled]="!signupForm.valid"
-                    [tabIndex]="activeComponent === tabs[1].componentTag? 0 : -1"
+            <button [tabIndex]="activeComponent === tabs[1].componentTag? 0 : -1"
                     class="btn btn-submit"
                     type="submit">Submit
             </button>

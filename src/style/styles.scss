@@ -106,6 +106,10 @@ html, body {
 .btn-bar {
   display: flex;
   justify-content: flex-end;
+
+  .btn:not(:first-of-type) {
+    margin-left: 10px;
+  }
 }
 
 .btn {
@@ -119,6 +123,21 @@ html, body {
   &.btn-submit {
     background-color: #613BE7;
     color: #FFFFFF;
+
+    &:hover, &:focus {
+      background-color: darken(#613BE7, 10);
+    }
+  }
+
+  &.btn-outline {
+    border: 1px solid #613BE7;
+    color: #613BE7;
+    background: #F3F5FA;
+
+    &:hover, &:focus {
+      background: #613BE7;
+      color: #F3F5FA;
+    }
   }
 }
 
@@ -147,7 +166,7 @@ label {
   font-family: 'Open Sans', sans-serif;
   @extend .text-bold;
 
-  div:first-of-type {
+  > div:first-of-type {
     display: flex;
     justify-content: space-between;
     align-items: baseline;

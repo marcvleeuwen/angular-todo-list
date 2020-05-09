@@ -84,20 +84,13 @@
   }
 }
 
-.btn-bar {
+.text-link {
+  font-size: 14px;
+  color: #5D6170;
+  text-decoration: underline;
+  cursor: pointer;
 
-  .btn-outline {
-    border: 1px solid #F3F5FA;
-    color: #F3F5FA;
-    background: transparent;
-
-    &:hover, &:focus {
-      background: #F3F5FA;
-      color: #1B2136;
-    }
-  }
-
-  .btn:not(:first-of-type) {
-    margin-left: 10px;
+  &:hover, &:focus {
+    color: #1B2136;
   }
 }

@@ -5,8 +5,8 @@ import {OauthUtils} from '../../common/utils/oauth.utils';
 import {User} from '../../common/models/user.model';
 import {Item} from '../../common/models/item.model';
 import {List} from '../../common/models/list.model';
-import {ListServiceHttpClient} from '../../common/services/list-service/http/list-service.http.client';
 import {NavConfig} from '../../common/models/nav-config.model';
+import {ListService} from '../../common/services/list-service/list-service.service';
 import {Category} from '../../common/models/category.model';
 
 @Component({
@@ -45,12 +45,12 @@ export class ListPage implements OnInit {
   private list: List;
   private queryParams: any;
   private currentUser: User = OauthUtils.getLoggedInUser();
-  private isListAdmin: boolean = OauthUtils.isAdmin()
-    || this.list.created_by === this.currentUser.id; // use this to be able to add users
+  // private isListAdmin: boolean = OauthUtils.isAdmin()
+  //   || this.list.created_by === this.currentUser.id; // use this to be able to add users
 
   constructor(private readonly router: Router,
               private readonly activatedRoute: ActivatedRoute,
-              private readonly listService: ListServiceHttpClient) {
+              private readonly listService: ListService) {
   }
 
   ngOnInit(): void {
@@ -73,7 +73,6 @@ export class ListPage implements OnInit {
     this.categories = this.list.categories;
     switch (tabIndex) {
       case 1:
-        this.categories = this.list.categories;
         this.items = this.list.items.filter(item => !item.status);
         this.categories = this.list.categories.filter(category =>
           this.items.some(item =>
@@ -100,12 +99,25 @@ export class ListPage implements OnInit {
   }
 
   public onItemLongPress(item: Item): void {
-    this.router.navigate(['/capture'], {state: {type: 'item', back: this.router.url, action: 'edit', details: item}});
+    this.router.navigate(['/capture'], {state: {type: 'item', list: this.list, back: this.router.url, action: 'edit', details: item}});
   }
 
   public updateItemStatus(item: Item): void {
     this.list.items.find(listItem => listItem.id === item.id).status = item.status;
-    this.onTabChanged(this.tabs.find(tab => tab.active).id);
+    this.submitItemUpdate(item);
+    this.onTabChanged(this.tabs.find(tab => tab.active).id); // This is to filter the list items on the current tab
+  }
+
+  public onClearListClick(): void {
+    this.listService.clearList(this.queryParams.listId).subscribe(res => {
+      this.items = undefined;
+    }, error => console.error(error));
+  }
+
+  private submitItemUpdate(item: Item): void {
+    this.listService.updateItem(item, item.id).subscribe(res => {
+      console.log('updated item', res);
+    }, error => console.error('update item', error));
   }
 
   private onMenuClick(): void {
@@ -114,7 +126,7 @@ export class ListPage implements OnInit {
   }
 
   private onNewItemClick(): void {
-    this.router.navigate(['/capture'], {state: {type: 'item', back: this.router.url, action: 'new'}});
+    this.router.navigate(['/capture'], {state: {type: 'item', list: this.list, back: this.router.url, action: 'new'}});
   }
 
 }

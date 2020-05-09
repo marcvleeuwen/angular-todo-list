@@ -1,10 +1,10 @@
 <app-nav (buttonClick)="onNavButtonClicked($event)" [config]="navConfig"></app-nav>
 <div class="container">
-  <form (ngSubmit)="onSubmit(itemForm.value, 'login')"
+  <form (ngSubmit)="onSubmit()"
         *ngIf="config?.type === 'item'; else list"
         [formGroup]="itemForm" class="items">
     <label for="item-title">
-      <div>Item title <span class="extra-text">(25 characters)</span></div>
+      <div>Item title <span class="extra-text">({{(25 - getFormValue('title').length) || '25'}} characters)</span></div>
       <input class="text-input"
              formControlName="title"
              id="item-title"
@@ -12,7 +12,8 @@
              type="text">
     </label>
     <label for="item-description">
-      <div>Item description <span class="extra-text">(100 characters)</span></div>
+      <div>Item description <span class="extra-text">({{(100 - getFormValue('description').length) || '100'}}
+        characters)</span></div>
       <input class="text-input"
              formControlName="description"
              id="item-description"
@@ -22,32 +23,39 @@
     <label for="item-quantity">
       <div>Item Quantity</div>
       <input class="text-input"
-             formControlName="description"
+             formControlName="quantity"
              id="item-quantity"
              name="item-quantity"
              type="text">
     </label>
     <label for="item-category">
       <div>Item Category</div>
-      <select class="text-input"
+      <select [(ngModel)]="selectedCategory"
+              class="text-input"
               formControlName="category"
               id="item-category"
-              name="login-password">
-        <option value="other">Other category</option>
+              name="item-category">
+        <option *ngFor="let item of categoryOptions"
+                [value]="item.value || item.id">
+          {{item.title || 'No category'}}
+        </option>
       </select>
     </label>
-    <button *ngIf="config?.action === 'edit'"
-            class="btn btn-submit float-right"
-            type="submit">Delete
-    </button>
+    <div class="btn-bar">
+      <button (click)="deleteItem()"
+              *ngIf="config?.action === 'edit'"
+              class="btn btn-outline float-right"
+              type="button">Delete item
+      </button>
+    </div>
   </form>
 </div>
 
 <ng-template #list>
-  <form (ngSubmit)="onSubmit(listForm.value, 'login')"
+  <form (ngSubmit)="onSubmit()"
         [formGroup]="listForm" class="items">
     <label for="list-title">
-      <div>List title <span class="extra-text">(25 characters)</span></div>
+      <div>List title <span class="extra-text">({{(25 - getFormValue('title').length) || '25'}} characters)</span></div>
       <input class="text-input"
              formControlName="title"
              id="list-title"
@@ -55,22 +63,50 @@
              type="text">
     </label>
     <label for="list-description">
-      <div>List description <span class="extra-text">(100 characters)</span></div>
+      <div>List description <span class="extra-text">({{(100 - getFormValue('description').length) || '100'}}
+        characters)</span></div>
       <input class="text-input"
              formControlName="description"
              id="list-description"
              name="list-description"
              type="text">
     </label>
-    <label for="list-users">
-      <div>Linked Users</div>
+    <label *ngIf="isAdmin" for="list-add-users">
+      <div>Add user</div>
+      <div class="user-search">
+        <input (change)="searchInputModel = $event.target.value"
+               class="text-input"
+               id="user-search-input"
+               placeholder="Username or email"
+               type="text">
+        <button (click)="onUserSearchClick()" class="btn btn-outline" type="button">search</button>
+      </div>
+      <ul *ngIf="searchInputModel?.length > 0 && userSearchResults?.length > 0" id="list-add-users">
+        <li *ngFor="let result of userSearchResults">
+          <span>{{result.username}}</span>
+          <span (click)="onAddUserClick(result)" class="material-icons">add</span>
+        </li>
+      </ul>
+      <span *ngIf="searchInputModel?.length > 0 && userSearchResults && userSearchResults.length < 1" class="no-results">
+        No results found
+      </span>
+    </label>
+
+    <label *ngIf="users?.length > 1" for="list-users">
+      <div>Linked users</div>
       <ul id="list-users">
-        <li>users</li>
+        <li *ngFor="let user of users">
+          <span>{{user.username}}</span>
+          <span *ngIf="isAdmin" class="material-icons" (click)="onRemoveUserClick(user)">remove</span>
+        </li>
       </ul>
     </label>
-    <button *ngIf="config?.action === 'edit'"
-            class="btn btn-submit float-right"
-            type="submit">Delete
-    </button>
+    <div class="btn-bar">
+      <button (click)="deleteList()"
+              *ngIf="config?.action === 'edit'"
+              class="btn btn-outline"
+              type="button">Delete list
+      </button>
+    </div>
   </form>
 </ng-template>

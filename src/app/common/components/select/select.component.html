@@ -1,0 +1,14 @@
+<div [class.open]="selectOpen" id="select">
+  <div (click)="onSelectClick()" id="selected">
+    <div>{{selectItems?.selected?.title || 'No category'}}</div>
+    <div class="arrow material-icons">expand_more</div>
+  </div>
+  <div class="options">
+    <div (click)="onOptionClick(option?.value)" *ngFor="let option of selectItems?.options"
+         [class.selected]="option?.selected"
+         class="option">
+      <div class="option-title">{{option.title || 'No category'}}</div>
+      <div class="option-description">{{option.description}}</div>
+    </div>
+  </div>
+</div>

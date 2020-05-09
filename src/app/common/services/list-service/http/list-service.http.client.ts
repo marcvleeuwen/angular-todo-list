@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {List} from '../../../models/list.model';
@@ -43,18 +43,33 @@ export class ListServiceHttpClient {
     );
   }
 
-
-  public addList(list: List): Observable<List> {
+  public getListUsers(listId: number): Observable<User[]> {
     const headers: HttpHeaders = new HttpHeaders()
       .set('Content-Type', 'application/json');
 
-    const url: string = `/api/v1/item`;
+    const url: string = `/api/v1/list-users/${listId}`;
+
+    return this.httpClient.get<User[]>(
+      url, {headers}
+    ).pipe(
+      catchError((err: HttpErrorResponse) => {
+        throw err;
+      })
+    );
+  }
+
+  public addList(list: List): Observable<any> {
+    console.log('http add list');
+    const headers: HttpHeaders = new HttpHeaders()
+      .set('Content-Type', 'application/json');
+
+    const url: string = `/api/v1/list`;
     const body = {
       title: list.title,
       description: list.description,
     };
 
-    return this.httpClient.post<List>(
+    return this.httpClient.post<any>(
       url, body, {headers}
     ).pipe(
       catchError((err: HttpErrorResponse) => {
@@ -86,7 +101,7 @@ export class ListServiceHttpClient {
     const headers: HttpHeaders = new HttpHeaders()
       .set('Content-Type', 'application/json');
 
-    const url: string = `/api/v1/lists/${listId}`;
+    const url: string = `/api/v1/list/${listId}`;
 
     return this.httpClient.delete<string>(
       url, {headers}
@@ -117,17 +132,38 @@ export class ListServiceHttpClient {
     );
   }
 
-  public removeUserFromList(userId: number, listId: number): Observable<string> {
+  public removeUserFromList(userId: number, list: List): Observable<any> {
+    const url: string = `/api/v1/list-remove-user`;
+
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: {
+        // tslint:disable-next-line
+        list: list,
+        // tslint:disable-next-line
+        userId: userId
+      },
+    };
+
+    return this.httpClient.delete<any>(
+      url, options
+    ).pipe(
+      catchError((err: HttpErrorResponse) => {
+        throw err;
+      })
+    );
+  }
+
+  public clearListItem(listId: number): Observable<any> {
     const headers: HttpHeaders = new HttpHeaders()
       .set('Content-Type', 'application/json');
 
-    const url: string = `/api/v1/list-remove-user`;
-    const params: HttpParams = new HttpParams()
-      .set('userId', String(userId))
-      .set('listId', String(listId));
+    const url: string = `/api/v1/remove-items/${listId}`;
 
-    return this.httpClient.delete<string>(
-      url, {headers, params}
+    return this.httpClient.delete<any>(
+      url, {headers}
     ).pipe(
       catchError((err: HttpErrorResponse) => {
         throw err;
@@ -160,7 +196,7 @@ export class ListServiceHttpClient {
     );
   }
 
-  public updateItem(item: Item, itemId: number): Observable<Item> {
+  public updateItem(item: Item, itemId: number): Observable<any> {
     const headers: HttpHeaders = new HttpHeaders()
       .set('Content-Type', 'application/json');
 
@@ -173,7 +209,7 @@ export class ListServiceHttpClient {
       status: item.status
     };
 
-    return this.httpClient.put<Item>(
+    return this.httpClient.put<any>(
       url, body, {headers}
     ).pipe(
       catchError((err: HttpErrorResponse) => {
@@ -182,13 +218,13 @@ export class ListServiceHttpClient {
     );
   }
 
-  public removeItem(itemId: number): Observable<string> {
+  public removeItem(itemId: number): Observable<any> {
     const headers: HttpHeaders = new HttpHeaders()
       .set('Content-Type', 'application/json');
 
     const url: string = `/api/v1/item/${itemId}`;
 
-    return this.httpClient.delete<string>(
+    return this.httpClient.delete<any>(
       url, {headers}
     ).pipe(
       catchError((err: HttpErrorResponse) => {
@@ -205,6 +241,22 @@ export class ListServiceHttpClient {
     const url: string = `/api/v1/categories`;
 
     return this.httpClient.get<Category[]>(
+      url, {headers}
+    ).pipe(
+      catchError((err: HttpErrorResponse) => {
+        throw err;
+      })
+    );
+  }
+
+  //  Users
+  public searchUsers(term: string): Observable<User[]> {
+    const headers: HttpHeaders = new HttpHeaders()
+      .set('Content-Type', 'application/json');
+
+    const url: string = `/api/v1/users/${term}`;
+
+    return this.httpClient.get<User[]>(
       url, {headers}
     ).pipe(
       catchError((err: HttpErrorResponse) => {

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {OauthUtils} from '../../common/utils/oauth.utils';
 import {Router} from '@angular/router';
 import {List} from '../../common/models/list.model';
-import {ListServiceHttpClient} from '../../common/services/list-service/http/list-service.http.client';
+import {ListService} from '../../common/services/list-service/list-service.service';
 
 @Component({
   selector: 'app-home',
@@ -15,7 +15,7 @@ export class HomePage implements OnInit {
   private userId: number;
 
   constructor(private readonly router: Router,
-              private readonly httpClient: ListServiceHttpClient) {
+              private readonly httpClient: ListService) {
   }
 
   ngOnInit(): void {
@@ -28,7 +28,7 @@ export class HomePage implements OnInit {
   }
 
   public onListClick(list: List) {
-    this.router.navigate(['/list'], {queryParams: { listId: list.id }});
+    this.router.navigate(['/list'], {queryParams: {listId: list.id}});
   }
 
   public onNewListClick() {

@@ -6,6 +6,7 @@ import {SettingsPage} from './pages/settings/settings.component';
 import {CapturePage} from './pages/capture/capture.component';
 import {AuthPage} from './pages/auth/auth.component';
 import {SplashScreenPage} from './pages/splash-screen/splash-screen.component';
+import {AuthGuard} from './common/guards/auth.guard';
 
 
 const routes: Routes = [{
@@ -13,16 +14,20 @@ const routes: Routes = [{
   component: SplashScreenPage
 }, {
   path: 'home',
-  component: HomePage
+  component: HomePage,
+  canActivate: [AuthGuard]
 }, {
   path: 'list',
-  component: ListPage
+  component: ListPage,
+  canActivate: [AuthGuard]
 }, {
   path: 'settings',
-  component: SettingsPage
+  component: SettingsPage,
+  canActivate: [AuthGuard]
 }, {
   path: 'capture',
-  component: CapturePage
+  component: CapturePage,
+  canActivate: [AuthGuard]
 }, {
   path: 'auth',
   component: AuthPage,

@@ -5,8 +5,8 @@ export interface List {
   id: number;
   title: string;
   description: string;
-  created_by: number;
-  user_count: number;
+  created_by?: number;
+  user_count?: number;
   categories?: Category[];
   items?: Item[];
 }

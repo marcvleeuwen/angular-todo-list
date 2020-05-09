@@ -1,0 +1,18 @@
+<div [id]="modalId" class="modal">
+  <div class="modal-header">
+    <div class="modal-title">{{title}}</div>
+    <span (click)="onDismissModal()" class="material-icons">close</span>
+  </div>
+
+  <div class="modal-content">
+    <div class="content">
+      <ng-content></ng-content>
+    </div>
+  </div>
+  <div *ngIf="positiveButtonText || negativeButtonText" class="but-bar">
+    <button (click)="onPositiveButtonClick()" *ngIf="positiveButtonText"
+            class="btn btn-positive">{{positiveButtonText}}</button>
+    <button (click)="onNegativeButtonClick()" *ngIf="negativeButtonText"
+            class="btn btn-negative">{{negativeButtonText}}</button>
+  </div>
+</div>

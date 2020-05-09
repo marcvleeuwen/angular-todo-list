@@ -138,28 +138,31 @@ export class AuthPage implements OnInit {
         console.error('error res', error.error);
       });
     } else if (form === 'signup') {
-      if (this.signupForm.invalid) {
-        this.validateControl(this.signUpUsername, 'signupUsername', 'Username');
-        this.validateControl(this.signUpEmail, 'signupEmail', 'Email');
-        this.validateControl(this.signUpPassword, 'signupPassword', 'Password');
-        this.validateControl(this.signUpPassword2, 'signupPassword2', 'Password2');
-        return;
-      } else if (this.validatePasswordMatch(this.signUpPassword, this.signUpPassword2, 'signup')) {
-        return;
+      this.validateControl(this.signUpUsername, 'signupUsername', 'Username');
+      this.validateControl(this.signUpEmail, 'signupEmail', 'Email');
+      this.validateControl(this.signUpPassword, 'signupPassword', 'Password');
+      this.validateControl(this.signUpPassword2, 'signupPassword2', 'Password2');
+      if (this.signupForm.valid) {
+        if (!this.validatePasswordMatch(this.signUpPassword, this.signUpPassword2, 'signup')) {
+          console.log('passwords', this.errors);
+          return;
+        }
+        this.oauth.signUp(formData.username, formData.email, formData.password, formData.password2).subscribe((res: any) => {
+          this.activeComponent = 'login';
+          this.outcome = {
+            status: 'success',
+            message: res
+          };
+        }, error => {
+          console.error('sign up error', error.error);
+          this.outcome = {
+            message: error.error,
+            status: 'error'
+          };
+        });
+      } else {
+        console.log(this.errors);
       }
-      this.oauth.signUp(formData.username, formData.email, formData.password, formData.password2).subscribe((res: any) => {
-        this.activeComponent = 'login';
-        this.outcome = {
-          status: 'success',
-          message: res
-        };
-      }, error => {
-        console.error('sign up error', error.error);
-        this.outcome = {
-          message: error.error,
-          status: 'error'
-        };
-      });
     }
   }
 

@@ -5,18 +5,20 @@ import {ListPage} from './list.component';
 import {ItemModule} from '../../common/components/item/item.module';
 import {NavModule} from '../../common/components/nav/nav.module';
 import {TabsModule} from '../../common/components/tabs/tabs.module';
+import {SelectModule} from '../../common/components/select/select.module';
 
 @NgModule({
   declarations: [
     ListPage
   ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    ItemModule,
-    NavModule,
-    TabsModule
-  ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        ItemModule,
+        NavModule,
+        TabsModule,
+        SelectModule
+    ],
   providers: [],
   bootstrap: []
 })

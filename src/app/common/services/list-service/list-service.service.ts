@@ -22,7 +22,8 @@ export class ListService {
     return this.httpClient.getListItems(listId);
   }
 
-  public addList(list: List): Observable<List> {
+  public addList(list: List): Observable<any> {
+    console.log('service add list');
     return this.httpClient.addList(list);
   }
 
@@ -34,12 +35,20 @@ export class ListService {
     return this.httpClient.removeList(listId);
   }
 
+  public getListUsers(listId: number): Observable<User[]> {
+    return this.httpClient.getListUsers(listId);
+  }
+
   public addUserToList(user: User, listId: number): Observable<any> {
     return this.httpClient.addUserToList(user, listId);
   }
 
-  public removeUserFromList(listId: number, userId: number): Observable<any> {
-    return this.httpClient.removeUserFromList(listId, userId);
+  public removeUserFromList(userId: number, list: List): Observable<any> {
+    return this.httpClient.removeUserFromList(userId, list);
+  }
+
+  public clearList(listId: number): Observable<any> {
+    return this.httpClient.clearListItem(listId);
   }
 
 
@@ -54,6 +63,11 @@ export class ListService {
 
   public updateItem(item: Item, itemId: number): Observable<Item> {
     return this.httpClient.updateItem(item, itemId);
+  }
+
+  // Users
+  public searchUsers(term: string): Observable<User[]> {
+    return this.httpClient.searchUsers(term);
   }
 
 
